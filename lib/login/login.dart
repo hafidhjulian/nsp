@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:nspakpol2/Danton/Homedanton.dart';
 import 'package:nspakpol2/Danki/MenuDanki.dart';
 import 'package:nspakpol2/Gubernur/MenuGub.dart';
+import 'package:nspakpol2/Danton/Beranda.dart';
 
 
 
@@ -19,6 +20,7 @@ class Homelogin extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Login(),
       routes: <String, WidgetBuilder>{
+        "/beranda": (BuildContext context) => Beranda(),
         "/homeDanton": (BuildContext context) => HomeDanton(),
         "/homeDanki": (BuildContext context) => MenuDanki(),
         "/homeGub": (BuildContext context) => MenuGub(),
@@ -38,12 +40,13 @@ class _LoginState extends State<Login> {
   TextEditingController user = new TextEditingController();
   TextEditingController pass = new TextEditingController();
 
+  // bool _status = false;
   String msg = '';
 
   Future<List> login() async {
     final response =
-        await http.post("http://dpongs.com/server/login.php", body: {
-      "nrp": user.text,
+        await http.post("http://cobakki.online/APInsp/public/api/login", body: {
+      "nrp_user": user.text,
       "password": pass.text,
     });
 
@@ -53,8 +56,8 @@ class _LoginState extends State<Login> {
         msg = "Login Fail";
       });
     } else {
-      if (datauser[0]['level_user'] == '2') {
-        Navigator.pushReplacementNamed(context, '/homeDanton');
+      if (datauser[0]['level_user'] == 2) {
+        Navigator.pushReplacementNamed(context, '/beranda');
       } else if (datauser[0]['level_user'] == '3') {
         Navigator.pushReplacementNamed(context, '/homeDanki');
       } else if (datauser[0]['level_user'] == '4') {
@@ -87,8 +90,14 @@ class _LoginState extends State<Login> {
     return datauser;
   }
 
+  // @overide
+  // Widget build(Build context){
+
+  // }
+
   @override
   Widget build(BuildContext context) {
+    
     return new Scaffold(
         body: new Material(
       child: new Container(
@@ -169,6 +178,8 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
-    ));
+    ),
+    );
+    
   }
 }

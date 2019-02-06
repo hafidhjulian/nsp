@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'AkunDanton.dart';
+import 'Beranda.dart';
+import 'GantiPass.dart';
+import 'package:nspakpol2/login/login.dart';
 
 class Riwayat extends StatelessWidget {
   @override
@@ -6,6 +11,13 @@ class Riwayat extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: RiwayatIsi(),
+      routes: <String, WidgetBuilder>{
+        "/beranda": (BuildContext context) => Beranda(),
+        "/riwayat": (BuildContext context) => Riwayat(),
+        "/profil": (BuildContext context) => AkunDanton(),
+        "/login": (BuildContext context) => Login(),
+         "/ganti": (BuildContext context) => GantiPass(),
+      },
     );
   }
 }
@@ -100,6 +112,52 @@ class _RiwayatIsiState extends State<RiwayatIsi> {
         title: Text("Riwayat"),
         backgroundColor: Color.fromRGBO(208, 2, 27, 1),
       ),
+      drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text('Hafidh Julian .K'),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                ),
+              ),
+              ListTile(
+                title: Text('Beranda'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/beranda');
+                },
+              ),
+              ListTile(
+                title: Text('Riwayat'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/riwayat');
+                },
+              ),
+              ListTile(
+                title: Text('Profil'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/profil');
+                },
+              ),
+              ListTile(
+                title: Text('Ganti Password'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/ganti');
+                },
+              ),
+              ListTile(
+                title: Text('Keluar'),
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+                  // final prefs = await SharedPreferences.getInstance();
+                  // prefs.remove('login');
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => Login()),);
+                },
+              ),
+            ],
+          ),
+        ),
       body: new Material(
         child: new Container(
           child: new SingleChildScrollView(

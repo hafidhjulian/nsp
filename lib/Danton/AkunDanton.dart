@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:nspakpol2/login/login.dart';
 import 'package:nspakpol2/Danton/GantiPass.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'Beranda.dart';
+import 'Riwayat.dart';
+import 'GantiPass.dart';
 
 class AkunDanton extends StatelessWidget {
   @override
@@ -10,8 +14,12 @@ class AkunDanton extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: IsiAkun(),
       routes: <String, WidgetBuilder>{
-        "/login": (BuildContext context) => Homelogin(),
-        
+        "/beranda": (BuildContext context) => Beranda(),
+        "/riwayat": (BuildContext context) => Riwayat(),
+        "/profil": (BuildContext context) => AkunDanton(),
+         "/login": (BuildContext context) => Login(),
+         "/ganti": (BuildContext context) => GantiPass(),
+
       },
     );
   }
@@ -41,13 +49,36 @@ class _IsiAkunState extends State<IsiAkun> {
                 ),
               ),
               ListTile(
+                title: Text('Beranda'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/beranda');
+                },
+              ),
+              ListTile(
+                title: Text('Riwayat'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/riwayat');
+                },
+              ),
+              ListTile(
+                title: Text('Profil'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/profil');
+                },
+              ),
+              ListTile(
                 title: Text('Ganti Password'),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/ganti');
+                },
               ),
               ListTile(
                 title: Text('Keluar'),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, '/login');
+                  Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+                  // final prefs = await SharedPreferences.getInstance();
+                  // prefs.remove('login');
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => Login()),);
                 },
               ),
             ],
@@ -87,7 +118,7 @@ class FotoProfil extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: EdgeInsets.only(top: 170.0),
+        padding: EdgeInsets.only(top: 250.0),
         child: CircleAvatar(
           backgroundImage: AssetImage('assets/profil.jpg'),
           radius: 70.0,
@@ -148,6 +179,9 @@ class IsiProfil extends StatelessWidget {
 }
 
 class IsiButton extends StatelessWidget {
+  // void _logout(BuildContext context){
+  //   Navigator.popUntil(context, ModalRoute.withName('/login'));
+  // }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -176,8 +210,10 @@ class IsiButton extends StatelessWidget {
                   'Keluar',
                   style: TextStyle(color: Colors.blue, fontSize: 20),
                 ),
-                onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+                onPressed: () async{
+                  final prefs = await SharedPreferences.getInstance();
+                  prefs.remove('login');
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Login()),);
                 },
               )
             ],

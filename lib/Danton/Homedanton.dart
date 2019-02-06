@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nspakpol2/Danton/Riwayat.dart';
-import 'package:nspakpol2/Danton/Notif.dart';
+// import 'package:nspakpol2/Danton/Notif.dart';
 import 'package:nspakpol2/Danton/AkunDanton.dart';
 import 'package:nspakpol2/Danton/Beranda.dart';
 

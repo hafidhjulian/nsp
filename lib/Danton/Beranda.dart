@@ -1,13 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
+// import 'dart:io';
+// import 'package:flutter/src/widgets/text.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+// import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 
 import 'package:flutter/material.dart';
 import 'package:nspakpol2/login/login.dart' as login;
 import 'package:nspakpol2/Danton/InputTaruna.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'Riwayat.dart';
+import 'AkunDanton.dart';
+import 'GantiPass.dart';
+import 'package:nspakpol2/login/login.dart' ;
 // import 'package:nspakpol2/Danton/Cari.dart';
 
 List list;
@@ -19,6 +26,13 @@ class Beranda extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: IsiBeranda(),
+      routes: <String, WidgetBuilder>{
+        "/beranda": (BuildContext context) => Beranda(),
+        "/riwayat": (BuildContext context) => Riwayat(),
+        "/profil": (BuildContext context) => AkunDanton(),
+         "/login": (BuildContext context) => Login(),
+         "/ganti": (BuildContext context) => GantiPass(),
+      },
     );
   }
 }
@@ -34,9 +48,8 @@ class _IsiBerandaState extends State<IsiBeranda> {
 
 
   Future<List> getData() async {
-    final response = await http.post("http://dpongs.com/server/getdanton.php",
-        body: {"nrp": login.nrp1});
-    var datatar = json.decode(response.body);
+    final response = await http.get("http://cobakki.online/APInsp/public/api/taruna/danton/${login.nrp1}");
+    var datatar = jsonDecode(response.body);
     // setState(() {
     //   dat = datatar.toString();
     // });
@@ -71,6 +84,52 @@ class _IsiBerandaState extends State<IsiBeranda> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: searchBar.build(context),
+      drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text('Hafidh Julian .K'),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                ),
+              ),
+              ListTile(
+                title: Text('Beranda'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/beranda');
+                },
+              ),
+              ListTile(
+                title: Text('Riwayat'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/riwayat');
+                },
+              ),
+              ListTile(
+                title: Text('Profil'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/profil');
+                },
+              ),
+              ListTile(
+                title: Text('Ganti Password'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/ganti');
+                },
+              ),
+              ListTile(
+                title: Text('Keluar'),
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+                  // final prefs = await SharedPreferences.getInstance();
+                  // prefs.remove('login');
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => Login()),);
+                },
+              ),
+            ],
+          ),
+        ),
       body: new FutureBuilder<List>(
         future: getData(),
         builder: (context, snapshot) {
@@ -85,6 +144,7 @@ class _IsiBerandaState extends State<IsiBeranda> {
                 );
         },
       ),
+      // bottomNavigationBar: HomeDanton(),
     );
   }
 }
@@ -104,8 +164,8 @@ class ItemList extends StatelessWidget {
             child: new ListTile(
               leading: new CircleAvatar(
                   backgroundImage: AssetImage('assets/logoakpol.png')),
-              title: new Text(list[i]["nama_taruna"]),
-              subtitle: new Text(list[i]["no_ak"]),
+              title: new Text(list[i]["no_ak"]),
+              subtitle: new Text(list[i]["nama_taruna"]),
               trailing: new FlatButton(
                 onPressed: () {
                   Navigator.push(

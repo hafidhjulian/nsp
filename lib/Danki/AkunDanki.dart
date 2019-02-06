@@ -116,6 +116,7 @@ class IsiButton extends StatelessWidget {
               ),
               FlatButton(
                 child: new Text('Ganti Password', style: TextStyle(color: Colors.blue, fontSize: 20),),
+                onPressed: (){},
               ),
               FlatButton(
                 padding: EdgeInsets.only(right: 0.0),

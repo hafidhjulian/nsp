@@ -3,6 +3,7 @@ import 'dart:convert';
 // import 'dart:io';
 // import 'package:flutter/src/widgets/text.dart';
 
+// import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 // import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:nspakpol2/login/login.dart' as login;
 import 'package:nspakpol2/Danton/InputTaruna.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'Riwayat.dart';
 import 'AkunDanton.dart';
 import 'GantiPass.dart';
@@ -46,9 +47,30 @@ class _IsiBerandaState extends State<IsiBeranda> {
   SearchBar searchBar;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  // final TextEditingController _filter = new TextEditingController();
+  // final dio = new Dio();
+  // String _searchText = "";
+  // List names = new List();
+  // List filteredNames = new List();
+  // Icon _searchIcon = new Icon(Icons.search);
+  // // Widget _appbar
+
+  // void _getNames() async{
+  //   final response = await dio.get("http://cobakki.online/APInsp/public/api/taruna/danton/${login.nrp1}");
+  //   List tempList = new List();
+  //   for (int i = 0; i < response.data['nama_taruna'].length; i++){
+  //     tempList.add(response.data['nama_taruna'][i]);
+  //   }
+
+  //   setState(() {
+  //     names = tempList;
+  //     filteredNames = names;
+  //   });
+  // }
+
 
   Future<List> getData() async {
-    final response = await http.get("http://cobakki.online/APInsp/public/api/taruna/danton/${login.nrp1}");
+    final response = await http.get("http://dpongs.com/APInsp/public/api/taruna/danton/${login.nrp1}");
     var datatar = jsonDecode(response.body);
     // setState(() {
     //   dat = datatar.toString();
@@ -73,7 +95,7 @@ class _IsiBerandaState extends State<IsiBeranda> {
         inBar: false,
         buildDefaultAppBar: buildAppBar,
         setState: setState,
-        onSubmitted: onSubmitted,
+        onSubmitted: print,
         onClosed: () {
           print("closed");
         });
@@ -89,9 +111,12 @@ class _IsiBerandaState extends State<IsiBeranda> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text('Hafidh Julian .K'),
+                child: Text('${login.namauser}', style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),),
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: Color.fromRGBO(208, 2, 27, 1),
                 ),
               ),
               ListTile(
@@ -172,7 +197,7 @@ class ItemList extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              InputTaruna(data: list[i]['no_ak'])));
+                              InputTaruna(data1: list[i]['no_ak'])));
                 },
                 child: new Text('Nilai'),
               ),

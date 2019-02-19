@@ -74,7 +74,7 @@ class ItemList extends StatelessWidget {
                 trailing: new FlatButton(
                   onPressed: (){Navigator.push(context, 
                   MaterialPageRoute(
-                    builder: (context) => InputTaruna(data: list[i]['no_ak'])
+                    builder: (context) => InputTaruna(data1: list[i]['no_ak'])
                   ));
                   },
                   child: new Text('Nilai'),

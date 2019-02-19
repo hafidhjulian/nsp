@@ -12,6 +12,7 @@ import 'package:nspakpol2/Danton/Beranda.dart';
 
 String token='';
 String nrp1;
+String namauser;
 
 class Homelogin extends StatelessWidget {
   @override
@@ -35,8 +36,9 @@ class Login extends StatefulWidget {
 }
 
 
-
 class _LoginState extends State<Login> {
+
+  final _formKey = GlobalKey<FormState>();
   TextEditingController user = new TextEditingController();
   TextEditingController pass = new TextEditingController();
 
@@ -45,55 +47,47 @@ class _LoginState extends State<Login> {
 
   Future<List> login() async {
     final response =
-        await http.post("http://cobakki.online/APInsp/public/api/login", body: {
-      "nrp_user": user.text,
+        await http.post("http://dpongs.com/APInsp/public/api/login", body: {
+      "no_nrp": user.text,
       "password": pass.text,
     });
 
     var datauser = jsonDecode(response.body);
-    if (datauser.length == 0) {
+    // var log = jsonDecode(response.body);
+    if (datauser[0]['status'] == 'gagal'){
+      // Navigator.pushReplacementNamed(context, '/beranda');
+      _alert();
+    }else if (datauser[0]['level_user'] == 3) {
+      Navigator.pushReplacementNamed(context, '/beranda');
       setState(() {
-        msg = "Login Fail";
+        nrp1 = datauser[0]['no_nrp'];
+        namauser = datauser[0]['nama_user'];
       });
-    } else {
-      if (datauser[0]['level_user'] == 2) {
-        Navigator.pushReplacementNamed(context, '/beranda');
-      } else if (datauser[0]['level_user'] == '3') {
-        Navigator.pushReplacementNamed(context, '/homeDanki');
-      } else if (datauser[0]['level_user'] == '4') {
-        Navigator.pushReplacementNamed(context, '/homeGub');
-      } else if (datauser[0]['level_user'] == '1') {
-        AlertDialog(
-          title: Text('Perhatian!'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Anda Admin, jangan masuk disini'),
-                Text('Masuk lewat web saja'),
-              ],
-            ),
-          ),
+    }  
+    return datauser;
+  }
+
+  void _alert(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // title: new Text("Alert"),
+          content: new Text("Password/Username tidak cocok", style: TextStyle(
+            color: Colors.red
+          ),),
           actions: <Widget>[
-            FlatButton(
-              child: Text('Ok'),
-              onPressed: (){
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
                 Navigator.of(context).pop();
               },
             )
           ],
         );
-      }
-      setState(() {
-        nrp1 = datauser[0]['nrp_user'];
-      });
-    }
-    return datauser;
+      },
+    );
   }
-
-  // @overide
-  // Widget build(Build context){
-
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -131,15 +125,33 @@ class _LoginState extends State<Login> {
                       ),
                     ],
                   ),
-                  new TextField(
-                    controller: user,
-                    decoration: new InputDecoration(hintText: 'NRP/No. AK'),
+                  new Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        new TextFormField(
+                          controller: user,
+                          decoration: new InputDecoration(hintText: 'NRP/No. AK'),
+                          validator: (value){
+                            if (value.isEmpty) {
+                              return 'silahkan input';
+                            }
+                          },
+                        ),
+                        new TextFormField(
+                          obscureText: true,
+                          controller: pass,
+                          decoration: new InputDecoration(hintText: 'Password'),
+                          validator: (value){
+                            if (value.isEmpty) {
+                              return 'silahkan input';
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  new TextField(
-                    obscureText: true,
-                    controller: pass,
-                    decoration: new InputDecoration(hintText: 'Password'),
-                  ),
+                  
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -154,7 +166,9 @@ class _LoginState extends State<Login> {
                         elevation: 4.0,
                         splashColor: Color.fromRGBO(208, 2, 27, 0.5),
                         onPressed: () {
-                          login();
+                          if (_formKey.currentState.validate()) {
+                            login();
+                          }
                         },
                         child: new Text('Login'),
                       ),

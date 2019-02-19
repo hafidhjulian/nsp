@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'AkunDanton.dart';
 import 'Beranda.dart';
 import 'GantiPass.dart';
 import 'package:nspakpol2/login/login.dart';
+import 'package:nspakpol2/login/login.dart' as login;
 
 class Riwayat extends StatelessWidget {
   @override
@@ -117,9 +118,12 @@ class _RiwayatIsiState extends State<RiwayatIsi> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text('Hafidh Julian .K'),
+                child: Text('${login.namauser}', style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),),
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: Color.fromRGBO(208, 2, 27, 1),
                 ),
               ),
               ListTile(

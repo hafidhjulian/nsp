@@ -4,9 +4,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nspakpol2/Danton/Homedanton.dart';
-import 'package:nspakpol2/Danki/MenuDanki.dart';
 import 'package:nspakpol2/Gubernur/MenuGub.dart';
 import 'package:nspakpol2/Danton/Beranda.dart';
+// import 'package:connectivity/connectivity.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 
 
 
@@ -23,7 +24,6 @@ class Homelogin extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         "/beranda": (BuildContext context) => Beranda(),
         "/homeDanton": (BuildContext context) => HomeDanton(),
-        "/homeDanki": (BuildContext context) => MenuDanki(),
         "/homeGub": (BuildContext context) => MenuGub(),
       },
     );
@@ -37,6 +37,66 @@ class Login extends StatefulWidget {
 
 
 class _LoginState extends State<Login> {
+
+  // var _connectionStatus = 'Unknown';
+  // Connectivity connectivity;
+  // StreamSubscription<ConnectivityResult> subscription;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   connectivity = new Connectivity();
+  //   subscription = connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+  //     _connectionStatus = result.toString();
+  //     print(_connectionStatus);
+  //     if (result == ConnectivityResult.wifi ||
+  //         result == ConnectivityResult.mobile) {
+  //       setState(() {});
+  //     } else {
+  //       toast();
+  //     }
+  //   });
+  // }
+
+  // @override
+  // void dispose() {
+  //   subscription.cancel();
+  //   super.dispose();
+  // }
+
+
+  // void toast(){
+  //   Fluttertoast.showToast(
+  //     msg: "Not connected",
+  //     toastLength: Toast.LENGTH_SHORT,
+  //     gravity: ToastGravity.CENTER,
+  //     timeInSecForIos: 5,
+  //     backgroundColor: Colors.red,
+  //     textColor: Colors.white,
+  //     fontSize: 16.0
+  //   );
+  // }
+  // void toast(){
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         // title: new Text("Alert"),
+  //         content: new Text("Tidak ada Koneksi", style: TextStyle(
+  //           color: Colors.red
+  //         ),),
+  //         actions: <Widget>[
+  //           new FlatButton(
+  //             child: new Text("OK"),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           )
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController user = new TextEditingController();

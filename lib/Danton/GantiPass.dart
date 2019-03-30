@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nspakpol2/login/login.dart' as login;
-import 'Beranda.dart';
+import 'package:nspakpol2/Danton/Beranda.dart';
 
 class GantiPass extends StatelessWidget {
   @override
@@ -34,7 +36,7 @@ class _GantiIsiState extends State<GantiIsi> {
           "password": baru.text,
         });
     var datauser = jsonDecode(response.body);
-    if (datauser[0]['massage'] == 'Successfull update user_nsp') {
+    if (datauser[0]['message'] == 'Successfull update user_nsp') {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -45,7 +47,7 @@ class _GantiIsiState extends State<GantiIsi> {
               new FlatButton(
                 child: new Text("Ok"),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/beranda');
+                  Navigator.of(context).pop();
                 },
               )
             ],
@@ -58,33 +60,33 @@ class _GantiIsiState extends State<GantiIsi> {
 
   void _filter() {
     if (baru.text == konfirm.text) {
-      _showDialog();
-      // ganti();
+      // _showDialog();
+      ganti();
     } else {
       _showIgnore();
     }
   }
 
-  void _showDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Success!"),
-          content: new Text("Password Berhasil Diganti"),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Ok"),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/beranda');
-                ganti();
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
+  // void _showDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: new Text("Success!"),
+  //         content: new Text("Password Berhasil Diganti"),
+  //         actions: <Widget>[
+  //           new FlatButton(
+  //             child: new Text("Ok"),
+  //             onPressed: () {
+  //               // Navigator.pushReplacementNamed(context, '/beranda');
+  //               ganti();
+  //             },
+  //           )
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   void _showIgnore() {
     showDialog(

@@ -82,7 +82,7 @@ class _IsiBerandaState extends State<IsiBeranda> {
     return new AppBar(
       title: Text("Beranda"),
         backgroundColor: Color.fromRGBO(208, 2, 27, 1),
-        actions: [searchBar.getSearchAction(context)],
+        // actions: [searchBar.getSearchAction(context)],
     );
   }
   void onSubmitted(String value) {
@@ -188,7 +188,7 @@ class ItemList extends StatelessWidget {
           child: new Card(
             child: new ListTile(
               leading: new CircleAvatar(
-                  backgroundImage: AssetImage('assets/logoakpol.png')),
+                backgroundImage: NetworkImage(list[i]['foto_taruna'])),
               title: new Text(list[i]["no_ak"]),
               subtitle: new Text(list[i]["nama_taruna"]),
               trailing: new FlatButton(

@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:async/async.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 
 class Taruna2 extends StatefulWidget {
@@ -105,7 +105,7 @@ void initState() {
     var request = new http.MultipartRequest("POST", uri);
 
     var multipartFile = new http.MultipartFile("image", stream, length,
-        filename: basename(image.path));
+        filename: path.basename(image.path));
 
     request.fields['keterangan'] = ket.text;
     request.files.add(multipartFile);
@@ -113,10 +113,58 @@ void initState() {
     var response = await request.send();
 
     if (response.statusCode == 200) {
-      print('Image Uploaded');
+      _berhasil();
+      // print('Image Uploaded');
     } else {
-      print('Upload failed');
+      _gagal();
+      // print('Upload failed');
     }
+  }
+
+
+  void _berhasil(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // title: new Text("Alert"),
+          content: new Text("Data Berhasil Dikirim", style: TextStyle(
+            color: Colors.green
+          ),),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                // Navigator.of(context).pop();
+                Navigator.pushReplacementNamed(context, '/riwayat');
+              },
+            )
+          ],
+        );
+      }, 
+    );
+  }
+
+  void _gagal(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // title: new Text("Alert"),
+          content: new Text("Data Gagal Dikirim", style: TextStyle(
+            color: Colors.red
+          ),),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      }, 
+    );
   }
 
   @override
